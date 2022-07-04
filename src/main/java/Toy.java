@@ -1,26 +1,26 @@
+import java.util.concurrent.atomic.AtomicBoolean;
+
 public class Toy implements Runnable {
-    private final UselessBox box;
+    private final AtomicBoolean toggle;
     private final int pause;
 
-    public Toy(UselessBox box) {
-        this.box = box;
-        this.pause = box.pause;
+    public Toy(AtomicBoolean toggle, int pause) {
+        this.toggle = toggle;
+        this.pause = pause;
     }
 
     @Override
     public void run() {
         Thread thread = Thread.currentThread();
         while (true) {
-            if (box.toggle) {
-                box.toggle = false;
+            if (toggle.get()) {
+                try {
+                    Thread.sleep(pause);
+                } catch (InterruptedException ignored) {
+                }
+                toggle.set(false);
                 System.out.printf("Игрушка %s выключил тумблер\n", thread.getName());
             }
-            if (thread.isInterrupted()) break;
-            try {
-                Thread.sleep(pause);
-            } catch (InterruptedException ignored) {
-            }
         }
-        System.out.println("Игрушка выключилась");
     }
 }

@@ -1,12 +1,15 @@
-public class User implements Runnable {
-    private final UselessBox box;
-    private final int cyclesNum;
-    private final int waitingTime;
+import java.util.concurrent.atomic.AtomicBoolean;
 
-    public User(UselessBox box) {
-        this.box = box;
-        this.cyclesNum = box.cyclesNum;
-        this.waitingTime = box.waitingTime;
+public class User implements Runnable {
+
+    private final AtomicBoolean toggle;
+    private final int cyclesNum;
+    private final int pause;
+
+    public User(AtomicBoolean toggle, int cyclesNum, int pause) {
+        this.toggle = toggle;
+        this.cyclesNum = cyclesNum;
+        this.pause = pause;
     }
 
     @Override
@@ -14,14 +17,14 @@ public class User implements Runnable {
         String name = Thread.currentThread().getName();
         int i = 0;
         while (i < cyclesNum) {
-            if (!box.toggle) {
-                box.toggle = true;
+            if (!toggle.get()) {
+                try {
+                    Thread.sleep(pause);
+                } catch (InterruptedException ignored) {
+                }
+                toggle.set(true);
                 System.out.printf("Пользователь %s включил тумблер\n", name);
                 i++;
-            }
-            try {
-                Thread.sleep(waitingTime);
-            } catch (InterruptedException ignored) {
             }
         }
         System.out.println("Пользователь закончил игру");

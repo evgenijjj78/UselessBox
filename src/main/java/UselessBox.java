@@ -1,30 +1,26 @@
-public class UselessBox {
-    volatile boolean toggle;
-    final int cyclesNum;
-    final int waitingTime;
-    final int pause;
+import java.util.concurrent.atomic.AtomicBoolean;
 
-    UselessBox(int cyclesNum, int waitingTime, int pause) {
-        this.cyclesNum = cyclesNum;
-        this.waitingTime = waitingTime;
-        this.pause = pause;
-    }
+public class UselessBox {
+    static AtomicBoolean toggle = new AtomicBoolean(false);
+    static final int cyclesNum = 5;
+    static final int pause = 1000;
 
     public static void main(String[] args) throws InterruptedException {
-        UselessBox box = new UselessBox(5, 500, 10);
 
-        Thread user = new Thread(new User(box));
+        Thread user = new Thread(new User(toggle, cyclesNum, pause));
 
         user.start();
 
-        Thread toy = new Thread(new Toy(box));
+        Thread toy = new Thread(new Toy(toggle, pause));
+
+        toy.setDaemon(true);
 
         toy.start();
 
         user.join();
 
-        while (toy.isAlive()) {
-            toy.interrupt();
-        }
+        Thread.sleep(pause);
+
+        System.out.println("Игра завершилась");
     }
 }
