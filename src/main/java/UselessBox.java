@@ -1,7 +1,7 @@
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class UselessBox {
-    static AtomicBoolean toggle = new AtomicBoolean(false);
+    static final AtomicBoolean toggle = new AtomicBoolean(false);
     static final int cyclesNum = 5;
     static final int pause = 1000;
 
