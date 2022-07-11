@@ -19,7 +19,7 @@ public class UselessBox {
 
         user.join();
 
-        Thread.sleep(pause);
+        Thread.sleep(pause); // смысл этой паузы, чтобы игрушка успевала выключить тумблер после завершения потока юзера. почему бы и нет?
 
         System.out.println("Игра завершилась");
     }
