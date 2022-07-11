@@ -1,9 +1,9 @@
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class UselessBox {
-    static final AtomicBoolean toggle = new AtomicBoolean(false);
-    static final int cyclesNum = 5;
-    static final int pause = 1000;
+    static final AtomicBoolean toggle = new AtomicBoolean(false);//ссылочная переменная атомик передается игрушке, что не так?
+    static final int cyclesNum = 5; // приватность тут необязательна, переменная статическая, потому что я не создаю объект главного класса.
+    static final int pause = 1000; // приватность тут необязательна, переменная статическая, потому что я не создаю объект главного класса.
 
     public static void main(String[] args) throws InterruptedException {
 
